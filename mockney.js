@@ -1,4 +1,3 @@
-
 var net = require('net');
 var connect = net.Socket.prototype.connect;
 
@@ -20,7 +19,7 @@ function mockConnect(options, cb) {
   // host is not required and defaults to 127.0.0.1
   var hostname = (options.host ? options.host : '127.0.0.1') + ':' + options.port;
 
-  // A redirect do exists, set host and port, note that port be be undefined
+  // A redirect do exists, set host and port
   if (has.call(redirects, hostname)) {
     options.host = redirects[hostname].host;
     options.port = redirects[hostname].port;
