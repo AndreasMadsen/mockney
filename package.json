@@ -1,13 +1,13 @@
 {
   "name": "mockney",
   "description": "Mock TCP connection by redirecting them",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "author": "Andreas Madsen <amwebdk@gmail.com>",
   "scripts": {
     "test": "tap test/test.js"
   },
   "main": "./mockney.js",
-  "repository" : {
+  "repository": {
     "type": "git",
     "url": "git://github.com/AndreasMadsen/mockney.git"
   },
@@ -21,11 +21,8 @@
     "route"
   ],
   "devDependencies": {
-    "tap": "0.4.x"
+    "endpoint": "^0.4.5",
+    "tap": "^11.0.0"
   },
-  "license": "MIT",
-  "engines": {
-    "node": "0.10",
-    "npm": "1"
-  }
+  "license": "MIT"
 }

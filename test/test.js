@@ -58,7 +58,7 @@ httpsServer.listen(0, 'localhost', function () {
             }));
           });
         });
-  
+
         test('http is redirected', function (t) {
           http.get('http://remote.test:8000', function (res) {
             res.pipe(endpoint(function (err, buffer) {
@@ -68,25 +68,25 @@ httpsServer.listen(0, 'localhost', function () {
             }));
           });
         });
-  
+
         test('tcp is redirected', function (t) {
           var socket = net.connect(7000, 'remote.test');
-    
+
           socket.pipe(endpoint(function (err, buffer) {
             socket.end();
-  
+
             t.equal(err, null);
             t.equal(buffer.toString(), 'TCP redirected');
             t.end();
           }));
         });
-  
+
         test('tls is redirected', function (t) {
           var socket = tls.connect(6000, 'remote.test', {rejectUnauthorized: false});
 
           socket.pipe(endpoint(function (err, buffer) {
             socket.end();
-  
+
             t.equal(err, null);
             t.equal(buffer.toString(), 'TLS redirected');
             t.end();
@@ -99,7 +99,7 @@ httpsServer.listen(0, 'localhost', function () {
           var socket = net.connect(7000, 'remote.test');
 
           socket.once('error', function (err) {
-            t.equal(err.message, 'getaddrinfo ENOTFOUND');
+            t.equal(err.message, 'getaddrinfo ENOTFOUND remote.test remote.test:7000');
             t.end();
           });
         });

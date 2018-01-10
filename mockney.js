@@ -1,20 +1,23 @@
-var net = require('net');
+'use strict';
+
+const net = require('net');
+const normalizeArgs = net._normalizeArgs;
 var connect = net.Socket.prototype.connect;
 
 var has = Object.prototype.hasOwnProperty;
 var redirects = Object.create(null);
 
-function mockConnect(options, cb) {
-  // Support old API
-  if (typeof options !== 'object') {
-    return connect.apply(this, arguments);
+function mockConnect(...args) {
+  let normalized;
+  // If passed an array, it's treated as an array of arguments that have
+  // already been normalized.
+  if (Array.isArray(args[0])) {
+    normalized = args[0];
+  } else {
+    normalized = normalizeArgs(args);
   }
-  
-  // It is known that options is an object
-  // Pipe is not supported by this module, so just call the original method
-  if (options.pipe) {
-     return connect.apply(this, arguments);
-  }
+  var options = normalized[0];
+  var cb = normalized[1];
 
   // host is not required and defaults to 127.0.0.1
   var hostname = (options.host ? options.host : '127.0.0.1') + ':' + options.port;
@@ -24,8 +27,8 @@ function mockConnect(options, cb) {
     options.host = redirects[hostname].host;
     options.port = redirects[hostname].port;
   }
-  
-  return connect.call(this, options, cb);
+
+  return connect.apply(this, normalized);
 }
 net.Socket.prototype.connect = mockConnect;
 
